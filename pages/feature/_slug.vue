@@ -85,13 +85,13 @@
 <script>
 export default {
   async asyncData({ $content, params }) {
-    const article = await $content('articles', params.slug).fetch()
+    const article = await $content('features', params.slug).fetch()
     const tagsList = await $content('tags')
       .only(['name', 'slug'])
       .where({ name: { $containsAny: article.tags } })
       .fetch()
     const tags = Object.assign({}, ...tagsList.map((s) => ({ [s.name]: s })))
-    const [prev, next] = await $content('articles')
+    const [prev, next] = await $content('features')
       .only(['title', 'slug'])
       .sortBy('createdAt', 'asc')
       .surround(params.slug)

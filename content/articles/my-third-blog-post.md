@@ -10,6 +10,9 @@ author:
 tags: 
   - javascript
   - web development
+
+regions:
+   - Asia
 ---
 
 ## Welcome to my third blog post using content module

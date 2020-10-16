@@ -10,6 +10,9 @@ author:
 tags: 
   - nuxtjs
   - web development
+
+regions:
+   - Asia
 ---
 
 ## Welcome to another blog post using content module
