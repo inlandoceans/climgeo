@@ -110,13 +110,8 @@ export default {
       .where({ regions: { $contains: region.name } })
       .sortBy('createdAt', 'asc')
       .fetch()
-    const features = await $content('features', params.slug)
-      .where({ regions: { $contains: region.name } })
-      .sortBy('createdAt', 'asc')
-      .fetch()
     return {
       articles,
-      features,
       region
     }
   },
