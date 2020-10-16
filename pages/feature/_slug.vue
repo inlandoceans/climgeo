@@ -4,8 +4,8 @@
   >
     <div class="relative lg:w-1/2 xs:w-full xs:h-84 lg:h-full post-left">
       <img
-        :src="article.img"
-        :alt="article.alt"
+        :src="feature.img"
+        :alt="feature.alt"
         class="absolute h-full w-full object-cover"
       />
       <div class="overlay"></div>
@@ -13,14 +13,14 @@
         <NuxtLink to="/"><Logo /></NuxtLink>
         <div class="mt-16 -mb-3 flex uppercase text-sm">
           <p class="mr-3">
-            {{ formatDate(article.updatedAt) }}
+            {{ formatDate(feature.updatedAt) }}
           </p>
           <span class="mr-3">•</span>
-          <p>{{ article.author.name }}</p>
+          <p>{{ feature.author.name }}</p>
         </div>
-        <h1 class="text-6xl font-bold">{{ article.title }}</h1>
-        <span v-for="(tag, id) in article.tags" :key="id">
-          <NuxtLink :to="`/blog/tag/${tags[tag].slug}`">
+        <h1 class="text-6xl font-bold">{{ feature.title }}</h1>
+        <span v-for="(tag, id) in feature.tags" :key="id">
+          <NuxtLink :to="`/tag/${tags[tag].slug}`">
             <span
               class="truncate uppercase tracking-wider font-medium text-ss px-2 py-1 rounded-full mr-2 mb-2 border border-light-border dark:border-dark-border transition-colors duration-300 ease-linear"
             >
@@ -48,14 +48,14 @@
     <div
       class="relative xs:py-8 xs:px-8 lg:py-32 lg:px-16 lg:w-1/2 xs:w-full h-full overflow-y-scroll markdown-body post-right custom-scroll"
     >
-      <h1 class="font-bold text-4xl">{{ article.title }}</h1>
-      <p>{{ article.description }}</p>
-      <p class="pb-4">Post last updated: {{ formatDate(article.updatedAt) }}</p>
+      <h1 class="font-bold text-4xl">{{ feature.title }}</h1>
+      <p>{{ feature.description }}</p>
+      <p class="pb-4">Post last updated: {{ formatDate(feature.updatedAt) }}</p>
       <!-- table of contents -->
       <nav class="pb-6">
         <ul>
           <li
-            v-for="link of article.toc"
+            v-for="link of feature.toc"
             :key="link.id"
             :class="{
               'font-semibold': link.depth === 2
@@ -74,30 +74,31 @@
         </ul>
       </nav>
       <!-- content from markdown -->
-      <nuxt-content :document="article" />
+      <nuxt-content :document="feature" />
       <!-- content author component -->
-      <author :author="article.author" />
+      <author :author="feature.author" />
       <!-- prevNext component -->
-      <PrevNext :prev="prev" :next="next" class="mt-8" />
+      <PrevNextFeat :prev="prev" :next="next" class="mt-8" />
     </div>
   </article>
 </template>
 <script>
 export default {
   async asyncData({ $content, params }) {
-    const article = await $content('features', params.slug).fetch()
+    const feature = await $content('articles', params.slug).fetch()
     const tagsList = await $content('tags')
       .only(['name', 'slug'])
-      .where({ name: { $containsAny: article.tags } })
+      .where({ name: { $containsAny: feature.tags } })
       .fetch()
     const tags = Object.assign({}, ...tagsList.map((s) => ({ [s.name]: s })))
-    const [prev, next] = await $content('features')
+    const [prev, next] = await $content('articles')
+      .where({ category: { $contains: 'feature' } })
       .only(['title', 'slug'])
       .sortBy('createdAt', 'asc')
       .surround(params.slug)
       .fetch()
     return {
-      article,
+      feature,
       tags,
       prev,
       next

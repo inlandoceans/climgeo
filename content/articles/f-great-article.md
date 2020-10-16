@@ -11,6 +11,8 @@ tags:
   - web development
 regions:
   - Africa
+category:
+ - feature
 ---
 ## Hello this article is great
 

@@ -11,6 +11,8 @@ tags:
   - nuxtjs
 regions:
   - Asia
+category:
+ - feature
 ---
 
 ## Welcome to my second blog post using content module

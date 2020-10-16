@@ -1,35 +1,11 @@
 <template>
   <div class="py-5">
-    Specials
-    <ul class="flex flex-wrap">
-      <li
-        v-for="special of specials"
-        :key="special.slug"
-        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12"
-      >
-        <img
-          v-if="special.img"
-          class="h-48 xxlmin:w-1/2 xxlmax:w-full object-cover"
-          :src="special.img"
-        />
-
-        <div
-          class="p-6 flex flex-col justify-between xxlmin:w-1/2 xxlmax:w-full"
-        >
-          <h2 class="font-bold">{{ special.title }}</h2>
-          <p>by {{ special.author.name }}</p>
-          <p class="font-bold text-gray-600 text-sm">
-            {{ special.description }}
-          </p>
-        </div>
-      </li>
-    </ul>
     Features
     <ul class="flex flex-wrap">
       <li
         v-for="feature of features"
         :key="feature.slug"
-        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12"
+        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12 article-card"
       >
         <NuxtLink
           :to="{ name: 'feature-slug', params: { slug: feature.slug } }"
@@ -53,6 +29,7 @@
         </NuxtLink>
       </li>
     </ul>
+
     Articles
     <ul class="flex flex-wrap">
       <li
@@ -135,14 +112,12 @@
 export default {
   async asyncData({ $content, params }) {
     const articles = await $content('articles', params.slug)
+      .where(!{ category: { $contains: 'feature' } })
       .only(['title', 'description', 'img', 'slug', 'author'])
       .sortBy('createdAt', 'desc')
       .fetch()
-    const specials = await $content('articles', params.slug)
-      .where({ tags: { $contains: 'feature' } })
-      .sortBy('createdAt', 'asc')
-      .fetch()
-    const features = await $content('features', params.slug)
+    const features = await $content('articles', params.slug)
+      .where({ category: { $contains: 'feature' } })
       .only(['title', 'description', 'img', 'slug', 'author'])
       .sortBy('createdAt', 'desc')
       .fetch()
@@ -156,7 +131,6 @@ export default {
       .fetch()
     return {
       articles,
-      specials,
       features,
       regions,
       tags
