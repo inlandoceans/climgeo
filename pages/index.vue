@@ -1,41 +1,63 @@
 <template>
   <div class="py-5">
-    Features
-    <ul class="flex flex-wrap">
-      <li
-        v-for="feature of features"
-        :key="feature.slug"
-        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12 article-card"
-      >
+    <div>
+      <div class="container grid grid-cols-4 xs:mb-6 items-center">
         <NuxtLink
-          :to="{ name: 'feature-slug', params: { slug: feature.slug } }"
-          class="flex transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md xxlmax:flex-col"
+          :to="{ name: 'feature-slug', params: { slug: featuredPost.slug } }"
+          class="col-span-3 transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md"
         >
           <img
-            v-if="feature.img"
-            class="h-48 xxlmin:w-1/2 xxlmax:w-full object-cover"
-            :src="feature.img"
-          />
-
-          <div
-            class="p-6 flex flex-col justify-between xxlmin:w-1/2 xxlmax:w-full"
-          >
-            <h2 class="font-bold">{{ feature.title }}</h2>
-            <p>by {{ feature.author.name }}</p>
-            <p class="font-bold text-gray-600 text-sm">
-              {{ feature.description }}
+            v-if="featuredPost.img"
+            class="col-span-3"
+            :src="`${featuredImg}`"
+        /></NuxtLink>
+        <NuxtLink
+          :to="{ name: 'feature-slug', params: { slug: featuredPost.slug } }"
+        >
+          <div class="px-5 col-span-1">
+            <h2 class="font-bold font-crimson">{{ featuredPost.title }}</h2>
+            <p class="text-sm font-spectral text-red-900">
+              by {{ featuredPost.author.name }}
+            </p>
+            <p class="font-spectral text-md">
+              {{ featuredPost.description }}
             </p>
           </div>
         </NuxtLink>
-      </li>
-    </ul>
+      </div>
+      <div
+        class="container grid grid-cols-3 gap-2 border-t border-solid border-grey-700"
+      >
+        <div v-for="feature of features" :key="feature.slug" class="col-span-1">
+          <NuxtLink
+            :to="{ name: 'feature-slug', params: { slug: feature.slug } }"
+            class="flex transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md xxlmax:flex-col"
+          >
+            <img
+              v-if="feature.img"
+              class="h-48 xxlmin:w-1/2 xxlmax:w-full object-cover"
+              :src="feature.img"
+            />
 
-    Articles
+            <div
+              class="p-6 flex flex-col justify-between xxlmin:w-1/2 xxlmax:w-full"
+            >
+              <h2 class="font-bold">{{ feature.title }}</h2>
+              <p>by {{ feature.author.name }}</p>
+              <p class="font-spectral">
+                {{ feature.description }}
+              </p>
+            </div>
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+
     <ul class="flex flex-wrap">
       <li
         v-for="article of articles"
         :key="article.slug"
-        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12 article-card"
+        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12"
       >
         <NuxtLink
           :to="{ name: 'blog-slug', params: { slug: article.slug } }"
@@ -116,11 +138,14 @@ export default {
       .only(['title', 'description', 'img', 'slug', 'author'])
       .sortBy('createdAt', 'desc')
       .fetch()
-    const features = await $content('articles', params.slug)
+    const tempfeatures = await $content('articles', params.slug)
       .where({ category: { $contains: 'feature' } })
       .only(['title', 'description', 'img', 'slug', 'author'])
       .sortBy('createdAt', 'desc')
       .fetch()
+    const featuredPost = tempfeatures[0]
+    const featuredImg = require(`../assets/images/${featuredPost.img}`)
+    const features = tempfeatures.slice(1, tempfeatures.length)
     const regions = await $content('regions', params.slug)
       .only(['name', 'description', 'img', 'slug'])
       .sortBy('createdAt', 'desc')
@@ -132,6 +157,8 @@ export default {
     return {
       articles,
       features,
+      featuredImg,
+      featuredPost,
       regions,
       tags
     }
@@ -140,9 +167,6 @@ export default {
 </script>
 
 <style class="postcss">
-.article-card {
-  border-radius: 8px;
-}
 .article-card a {
   background-color: #fff;
   border-radius: 8px;

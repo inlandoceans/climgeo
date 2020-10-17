@@ -27,6 +27,7 @@
     "prism-themes": "1.4.1"
   },
   "devDependencies": {
+    "@nuxtjs/color-mode": "^2.0.0",
     "@nuxtjs/eslint-config": "3.1.0",
     "@nuxtjs/eslint-module": "2.0.0",
     "@nuxtjs/stylelint-module": "4.0.0",
@@ -41,6 +42,7 @@
     "prettier": "2.1.2",
     "stylelint": "13.7.1",
     "stylelint-config-prettier": "8.0.2",
-    "stylelint-config-standard": "20.0.0"
+    "stylelint-config-standard": "20.0.0",
+    "tailwindcss-dark-mode": "^1.1.7"
   }
 }

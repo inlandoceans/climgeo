@@ -1,5 +1,5 @@
 <template>
-  <div class="m-8">
+  <div class="container mx-auto my-4">
     <TheHeader />
     <Nuxt />
   </div>
@@ -7,8 +7,8 @@
 
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Crimson Text', 'Source Sans Pro', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -48,7 +48,7 @@ export default {
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap'
+          'https://fonts.googleapis.com/css2?family=Crimson+Text:wght@700&family=Montserrat:wght@500&display=swap'
       }
     ]
   }

@@ -7,10 +7,9 @@
 module.exports = {
   theme: {
     screens: {
-      xs: '320px',
       sm: '640px',
       md: '768px',
-      lg: '1024px',
+      lg: '960px',
       xl: '1280px',
       xxlmin: '1351px',
       xxlmax: { max: '1350px' }
@@ -19,8 +18,10 @@ module.exports = {
       display: ['Quicksand', 'sans-serif'],
       body: ['Quicksand', 'sans-serif'],
       spectral: ['Spectral', 'serif'],
-      montserrat: ['Montserrat', 'sans-serif']
+      montserrat: ['Montserrat', 'sans-serif'],
+      crimson: ['Crimson Text', 'serif']
     },
+
     borderWidth: {
       default: '1px',
       0: '0',

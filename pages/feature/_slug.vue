@@ -1,58 +1,33 @@
 <template>
-  <article
-    class="flex lg:h-screen w-screen lg:overflow-hidden xs:flex-col lg:flex-row"
-  >
-    <div class="relative lg:w-1/2 xs:w-full xs:h-84 lg:h-full post-left">
-      <img
-        :src="feature.img"
-        :alt="feature.alt"
-        class="absolute h-full w-full object-cover"
-      />
-      <div class="overlay"></div>
-      <div class="absolute top-32 left-32 text-white">
-        <NuxtLink to="/"><Logo /></NuxtLink>
-        <div class="mt-16 -mb-3 flex uppercase text-sm">
-          <p class="mr-3">
-            {{ formatDate(feature.updatedAt) }}
-          </p>
-          <span class="mr-3">•</span>
-          <p>{{ feature.author.name }}</p>
-        </div>
-        <h1 class="text-6xl font-bold">{{ feature.title }}</h1>
-        <span v-for="(tag, id) in feature.tags" :key="id">
-          <NuxtLink :to="`/tag/${tags[tag].slug}`">
-            <span
-              class="truncate uppercase tracking-wider font-medium text-ss px-2 py-1 rounded-full mr-2 mb-2 border border-light-border dark:border-dark-border transition-colors duration-300 ease-linear"
-            >
-              {{ tags[tag].name }}
-            </span>
-          </NuxtLink>
-        </span>
-      </div>
-      <div class="flex absolute top-3rem right-3rem">
-        <NuxtLink
-          to="/"
-          class="mr-8 self-center text-white font-bold hover:underline"
-        >
-          All articles
+  <article class="mx-auto">
+    <div class="py-8 text-center">
+      <img :src="feature.img" :alt="feature.alt" class="" />
+
+      <h1 class="text-4xl md:text-6xl font-bold">{{ feature.title }}</h1>
+      <span v-for="(tag, id) in feature.tags" :key="id">
+        <NuxtLink :to="`/tag/${tags[tag].slug}`">
+          <span
+            class="truncate uppercase tracking-wider font-medium text-sm px-2 py-1 rounded mr-2 mb-2 border border-light-border dark:border-dark-border transition-colors duration-300 ease-linear"
+          >
+            {{ tags[tag].name }}
+          </span>
         </NuxtLink>
-        <a
-          href="https://nuxtjs.org/blog/creating-blog-with-nuxt-content"
-          class="mr-8 self-center text-white font-bold hover:underline"
-        >
-          Tutorial
-        </a>
-        <AppSearchInput />
+      </span>
+      <p class="py-2 text-lg">{{ feature.description }}</p>
+      <div class="mx-24 h-1 bg-gradient-to-r from-blue-800 to-red-800"></div>
+      <div class="text-center mt-8 uppercase text-sm">
+        <span class="mr-3">
+          {{ formatDate(feature.updatedAt) }}
+        </span>
+        <span class="mr-3">•</span>
+        <NuxtLink :to="`/author/${feature.author.name}`">
+          <span>{{ feature.author.name }}</span>
+        </NuxtLink>
       </div>
     </div>
-    <div
-      class="relative xs:py-8 xs:px-8 lg:py-32 lg:px-16 lg:w-1/2 xs:w-full h-full overflow-y-scroll markdown-body post-right custom-scroll"
-    >
-      <h1 class="font-bold text-4xl">{{ feature.title }}</h1>
-      <p>{{ feature.description }}</p>
-      <p class="pb-4">Post last updated: {{ formatDate(feature.updatedAt) }}</p>
+    <div class="max-w-2xl mx-auto h-full px-6">
       <!-- table of contents -->
-      <nav class="pb-6">
+      <nav class="hidden pb-6">
         <ul>
           <li
             v-for="link of feature.toc"
@@ -74,7 +49,8 @@
         </ul>
       </nav>
       <!-- content from markdown -->
-      <nuxt-content :document="feature" />
+      <nuxt-content :document="feature" max-w-2xl />
+      <p class="pb-4">Post last updated: {{ formatDate(feature.updatedAt) }}</p>
       <!-- content author component -->
       <author :author="feature.author" />
       <!-- prevNext component -->
@@ -115,10 +91,12 @@ export default {
 <style>
 .nuxt-content p {
   margin-bottom: 20px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .nuxt-content h2 {
   font-weight: bold;
   font-size: 28px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .nuxt-content h3 {
   font-weight: bold;
