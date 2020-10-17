@@ -1,6 +1,6 @@
 ---
 title: The World Ahead
-description: Exploring small bodies in the solar system provides clues to origins
+description: Exploring small bodies in the solar system provides clues to origins has now become an essential path towards long term survival. How can humanity approach these new frontiers?
 img: featured.jpg
 alt: article 7
 author: 

@@ -1,30 +1,68 @@
 <template>
-  <div class="py-5">
+  <div class="mx-5 py-5">
     <div>
-      <div class="container grid grid-cols-4 xs:mb-6 items-center">
-        <NuxtLink
-          :to="{ name: 'feature-slug', params: { slug: featuredPost.slug } }"
-          class="col-span-3 transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md"
-        >
-          <img
-            v-if="featuredPost.img"
-            class="col-span-3"
-            :src="`${featuredImg}`"
-        /></NuxtLink>
-        <NuxtLink
-          :to="{ name: 'feature-slug', params: { slug: featuredPost.slug } }"
-        >
-          <div class="px-5 col-span-1">
-            <h2 class="font-bold font-crimson">{{ featuredPost.title }}</h2>
+      <div class="container grid md:grid-cols-12 mb-2 mx-auto">
+        <div class="md:col-span-8">
+          <NuxtLink
+            :to="{ name: 'feature-slug', params: { slug: featuredPost.slug } }"
+            class="col-span-3 transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md"
+          >
+            <img v-if="featuredPost.img" :src="`${featuredImg}`" />
+          </NuxtLink>
+        </div>
+        <div class="mx-8 px-5 md:col-span-4 py-5">
+          <NuxtLink
+            :to="{ name: 'feature-slug', params: { slug: featuredPost.slug } }"
+          >
+            <h2 class="sm:text-2xl lg:text-4xl font-extrabold">
+              {{ featuredPost.title }}
+            </h2>
+            <span class="mr-3">
+              {{ formatDate(featuredPost.createdAt) }}
+            </span>
             <p class="text-sm font-spectral text-red-900">
               by {{ featuredPost.author.name }}
             </p>
-            <p class="font-spectral text-md">
+            <p class="font-spectral text-md py-5">
               {{ featuredPost.description }}
             </p>
-          </div>
-        </NuxtLink>
+          </NuxtLink>
+        </div>
       </div>
+      <div
+        class="mx-12 my-4 h-1 bg-gradient-to-r from-blue-800 to-red-800"
+      ></div>
+      <div>
+        <ul class="flex flex-wrap">
+          <li
+            v-for="article of articles"
+            :key="article.slug"
+            class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12"
+          >
+            <NuxtLink
+              :to="{ name: 'blog-slug', params: { slug: article.slug } }"
+              class="flex transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md xxlmax:flex-col"
+            >
+              <img
+                v-if="article.img"
+                class="h-48 xxlmin:w-1/2 xxlmax:w-full object-cover"
+                :src="article.img"
+              />
+
+              <div
+                class="p-6 flex flex-col justify-between xxlmin:w-1/2 xxlmax:w-full"
+              >
+                <h2 class="font-bold">{{ article.title }}</h2>
+                <p>by {{ article.author.name }}</p>
+                <p class="font-bold text-gray-600 text-sm">
+                  {{ article.description }}
+                </p>
+              </div>
+            </NuxtLink>
+          </li>
+        </ul>
+      </div>
+
       <div
         class="container grid grid-cols-3 gap-2 border-t border-solid border-grey-700"
       >
@@ -53,34 +91,6 @@
       </div>
     </div>
 
-    <ul class="flex flex-wrap">
-      <li
-        v-for="article of articles"
-        :key="article.slug"
-        class="xs:w-full md:w-1/2 px-2 xs:mb-6 md:mb-12"
-      >
-        <NuxtLink
-          :to="{ name: 'blog-slug', params: { slug: article.slug } }"
-          class="flex transition-shadow duration-150 ease-in-out shadow-sm hover:shadow-md xxlmax:flex-col"
-        >
-          <img
-            v-if="article.img"
-            class="h-48 xxlmin:w-1/2 xxlmax:w-full object-cover"
-            :src="article.img"
-          />
-
-          <div
-            class="p-6 flex flex-col justify-between xxlmin:w-1/2 xxlmax:w-full"
-          >
-            <h2 class="font-bold">{{ article.title }}</h2>
-            <p>by {{ article.author.name }}</p>
-            <p class="font-bold text-gray-600 text-sm">
-              {{ article.description }}
-            </p>
-          </div>
-        </NuxtLink>
-      </li>
-    </ul>
     <h3 class="mb-4 font-bold text-2xl uppercase text-center">Topics</h3>
     <ul class="flex flex-wrap mb-4 text-center">
       <li
@@ -134,18 +144,27 @@
 export default {
   async asyncData({ $content, params }) {
     const articles = await $content('articles', params.slug)
-      .where(!{ category: { $contains: 'feature' } })
+      .where({ category: { $contains: 'article' } })
       .only(['title', 'description', 'img', 'slug', 'author'])
       .sortBy('createdAt', 'desc')
       .fetch()
     const tempfeatures = await $content('articles', params.slug)
       .where({ category: { $contains: 'feature' } })
-      .only(['title', 'description', 'img', 'slug', 'author'])
+      .only([
+        'title',
+        'description',
+        'img',
+        'slug',
+        'author',
+        'createdAt',
+        'updatedAt'
+      ])
       .sortBy('createdAt', 'desc')
       .fetch()
     const featuredPost = tempfeatures[0]
     const featuredImg = require(`../assets/images/${featuredPost.img}`)
     const features = tempfeatures.slice(1, tempfeatures.length)
+
     const regions = await $content('regions', params.slug)
       .only(['name', 'description', 'img', 'slug'])
       .sortBy('createdAt', 'desc')
@@ -161,6 +180,12 @@ export default {
       featuredPost,
       regions,
       tags
+    }
+  },
+  methods: {
+    formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(date).toLocaleDateString('en', options)
     }
   }
 }

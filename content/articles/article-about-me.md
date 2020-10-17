@@ -13,6 +13,9 @@ tags:
 
 regions:
   - Europe
+
+category:
+ - article
 ---
 ## There is just so much to write about me. Where do I start?
 

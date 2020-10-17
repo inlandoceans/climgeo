@@ -15,7 +15,7 @@
       </span>
       <p class="py-2 text-lg">{{ feature.description }}</p>
       <div class="mx-24 h-1 bg-gradient-to-r from-blue-800 to-red-800"></div>
-      <div class="text-center mt-8 uppercase text-sm">
+      <div class="text-center mt-8 uppercase text-sm text-red-800">
         <span class="mr-3">
           {{ formatDate(feature.updatedAt) }}
         </span>
@@ -52,7 +52,7 @@
       <nuxt-content :document="feature" max-w-2xl />
       <p class="pb-4">Post last updated: {{ formatDate(feature.updatedAt) }}</p>
       <!-- content author component -->
-      <author :author="feature.author" />
+      <author class="hidden" :author="feature.author" />
       <!-- prevNext component -->
       <PrevNextFeat :prev="prev" :next="next" class="mt-8" />
     </div>

@@ -10,6 +10,9 @@ author:
 tags: 
   - web development
   - feature
+
+category:
+ - article
 ---
 ## Hello this article explores the unknown
 

@@ -11,6 +11,9 @@ tags:
   - web development
 regions:
    - Asia
+
+category:
+ - article
 ---
 ## Hello i'm a very interesting article 
 

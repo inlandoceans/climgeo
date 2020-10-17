@@ -13,6 +13,9 @@ tags:
 
 regions:
    - Asia
+
+category:
+ - article
 ---
 
 ## Welcome to another blog post using content module
